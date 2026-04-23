@@ -1,0 +1,56 @@
+name: etl pipeline
+on:
+    push:
+        branches:
+            - main
+jobs:
+    job1:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v2
+            - name: Run extract_data.py
+              run: echo 'Job1'
+    job2:
+        runs-on: ubuntu-latest
+        needs: job1
+        steps:
+            - name: Checout Code
+              uses: actions/checkout@v2
+            - name: Run transform_data.py
+              run: echo 'Job2'
+
+    job3:
+        runs-on: ubuntu-latest
+        needs: job1
+        steps:
+            - name: Checout Code
+              uses: actions/checkout@v2
+            - name: Run transform_data.py
+              run: echo 'Job3'
+    job4:
+        runs-on: ubuntu-latest
+        needs: job2
+        steps:
+            - name: Checout Code
+              uses: actions/checkout@v2
+            - name: Run load_data.py
+              run: echo 'job4'
+
+    job5:
+        runs-on: ubuntu-latest
+        needs: job3
+        steps:
+            - name: Checout Code
+              uses: actions/checkout@v2
+            - name: Run load_data.py
+              run: echo'job5'
+
+    job6:
+        runs-on: ubuntu-latest
+        needs: [job4,job5]
+        steps:
+            - name: Checout Code
+              uses: actions/checkout@v2
+            - name: Run load_data.py
+              run: echo 'job6'
